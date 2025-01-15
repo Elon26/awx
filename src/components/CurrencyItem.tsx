@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import '../styles/CurrencyItem.css';
 import Decimal from 'decimal.js-light';
 import { Currency } from '../types/Currency';
@@ -20,7 +20,7 @@ interface Props {
   maxUSDTValue: number
 }
 
-let timeout: null | number = null;
+let timeout: null | ReturnType<typeof setTimeout> = null;
 
 function CurrencyItem({
   currency, 
@@ -38,7 +38,7 @@ function CurrencyItem({
   const percents = [25, 50, 75, 100];
   const percentsToCalc = [0, 25, 50, 75, 100];
   const [currentCurrencyValue, setCurrentCurrencyValue] = useState(currencyValue);
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   function handleChangeValue(newValue: number) {
     setCurrentCurrencyValue(newValue);
@@ -79,7 +79,7 @@ function CurrencyItem({
     <div className="currency">
       <div className="currencyInputArea">
         <input className="currencyInput" type='number' value={currentCurrencyValue.toString()} onChange={(e) => handleChangeValue(+e.target.value)} min={minValue} max={maxValue} step={step} id={`input${currency}`} ref={inputRef}/>
-        <label className="currencyLabel" htmlFor={`input${currency}`} onClick={() => inputRef.current.select()}>
+        <label className="currencyLabel" htmlFor={`input${currency}`} onClick={() =>  inputRef.current && inputRef.current.select()}>
           <span>{currentCurrencyValue.toString()}</span>
           <span className="currencyName">{currency}</span>
         </label>
